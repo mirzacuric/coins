@@ -18,5 +18,8 @@ module.exports = {
     source: 'src',
     img: 'src',
     image: 'xlink:href'
+  },
+  options: {
+    extractCSS: true
   }
 }
