@@ -15,12 +15,33 @@
           </router-link>
         </b-nav-item>
       </b-navbar-nav>
+      <!-- Right aligned nav items -->
+    <b-navbar-nav class="ml-auto">
+      <b-nav-item-dropdown :text="currency" right>
+        <b-dropdown-item @click="setCurrency('USD')">USD</b-dropdown-item>
+        <b-dropdown-item @click="setCurrency('EUR')">EUR</b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  name: 'Header'
+  name: 'Header',
+  computed: {
+    ...mapGetters(['currency'])
+  },
+  methods: {
+    ...mapActions({
+      setCurrency: 'setCurrency'
+    }),
+    setCurrency (value) {
+      this.$store.dispatch('setCurrency', {value}).then(() => {
+        console.log('Coins', this.$store.currency)
+      })
+    }
+  }
 }
 </script>

@@ -1,31 +1,44 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  </div>
+  <b-table striped hover :items="items" :fields="fields"></b-table>
 </template>
 
 <script>
-import coinsService from '../services/coins.service.js'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Coins',
+  computed: {
+    ...mapGetters(['coins', 'currency'])
+  },
   data () {
     return {
-      currency: this.$route.query && this.$route.query.currency ? this.$route.query.currency : 'USD',
-      msg: 'Welcome to Coins page',
-      coins: []
+      fields: this.currency ? ['rank', 'name', 'symbol', 'price_USD', this.getSelectedCurrencyColumn().name] : [],
+      items: []
     }
   },
   methods: {
-    loadCoins () {
-      coinsService.getCoins(this.currency).then(data => {
-        this.coins = data
+    ...mapActions({
+      getCoins: 'loadCoins'
+    }),
+    loadCoins (currency) {
+      this.items = []
+      this.$store.dispatch('getCoins', {currency}).then(() => {
+        this.$store.state.coins.map((coin, index) => {
+          this.items.push({rank: coin.rank, name: coin.name, symbol: coin.symbol, price_USD: coin.price_usd, [this.getSelectedCurrencyColumn().name]: coin[this.getSelectedCurrencyColumn().value]})
+        })
       })
+    },
+    getSelectedCurrencyColumn () {
+      return {
+        name: 'price_' + this.currency,
+        value: 'price_' + this.currency.toLowerCase()
+      }
     }
   },
   watch: {
-    '$route' (to, from) {
-      this.currency = to.params.currency
-      this.loadCoins()
+    'currency' (to, from) {
+      console.log('currency', this.currency)
+      this.loadCoins(this.currency)
     }
   },
   created () {
@@ -36,5 +49,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+ table {
+   margin-top: 2rem
+ }
 </style>
