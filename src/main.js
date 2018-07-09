@@ -4,6 +4,7 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import AppLayout from './components/Layout'
 import router from './router'
+import store from './vuex/index'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -16,5 +17,6 @@ new Vue({
   el: '#app',
   router,
   components: { AppLayout },
-  template: '<AppLayout/>'
+  template: '<AppLayout/>',
+  store
 })

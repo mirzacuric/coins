@@ -17,9 +17,7 @@ export default {
   },
   methods: {
     loadCoins () {
-      console.log('init', this.$route)
       coinsService.getCoins(this.currency).then(data => {
-        console.log(data)
         this.coins = data
       })
     }
