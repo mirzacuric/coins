@@ -25,4 +25,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+h1, h2 {
+  font-weight: normal;
+}
 </style>
